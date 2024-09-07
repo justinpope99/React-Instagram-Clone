@@ -2,7 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import HomePage from "./pages/HomePage/HomePage.jsx";
 import AuthPage from "./pages/AuthPage/AuthPage.jsx";
 import PageLayout from "./Layouts/PageLayout/PageLayout.jsx";
-import ProfilePage from "./components/ProfilePage/ProfilePage.jsx";
+import ProfilePage from "./pages/ProfilePage/ProfilePage.jsx";
 // import useAuthStore from "./store/authStore.js";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "./firebase/firebase.js";
