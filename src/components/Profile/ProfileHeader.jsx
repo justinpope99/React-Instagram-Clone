@@ -10,19 +10,24 @@ import {
 import useUserProfileStore from "../../store/userProfileStore.js";
 import useAuthStore from "../../store/authStore.js";
 import EditProfile from "./EditProfile.jsx";
+import useFollowUser from "../../hooks/useFollowUser.js";
 
 const ProfileHeader = () => {
   // We'll get the userProfile state
   const { userProfile } = useUserProfileStore();
   const authUser = useAuthStore((state) => state.user);
+  // Edit Profile Modal
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  // Since we're in the user profile page, we can use userProfile.uid as the user to follow or unfollow
+  const { isFollowing, isUpdating, handleFollowUser } = useFollowUser(
+    userProfile?.uid
+  );
+
   // The user is visiting their own profile if the authenticated user and the current user profile match
   const visitingOwnProfileAndAuth =
     authUser && authUser.username === userProfile.username;
   const visitingAnotherProfileAndAuth =
     authUser && authUser.username !== userProfile.username;
-
-  // Edit Profile Modal
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Flex
@@ -73,8 +78,11 @@ const ProfileHeader = () => {
                 color={"white"}
                 _hover={{ bg: "blue.600" }}
                 size={{ base: "xs", md: "sm" }}
+                onClick={handleFollowUser}
+                isLoading={isUpdating}
               >
-                Follow
+                {/* If the user is following, it will say Unfollow, otherwise it will say Follow */}
+                {isFollowing ? "Unfollow" : "Follow"}
               </Button>
             </Flex>
           )}
