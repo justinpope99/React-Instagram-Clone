@@ -21,12 +21,52 @@ import Comment from "../Comment/Comment.jsx";
 import PostFooter from "../FeedPosts/PostFooter.jsx";
 import useUserProfileStore from "../../store/userProfileStore.js";
 import useAuthStore from "../../store/authStore.js";
+import useShowToast from "../../hooks/useShowToast.js";
+import { useState } from "react";
+import { deleteObject, ref } from "firebase/storage";
+import { firestore, storage } from "../../firebase/firebase.js";
+import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
+import usePostStore from "../../store/postStore.js";
 
 const ProfilePost = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   // By using zustand with global states, we can use the userProfile state in any component by only calling this function
   const userProfile = useUserProfileStore((state) => state.userProfile);
   const authUser = useAuthStore((state) => state.user);
+  const showToast = useShowToast();
+  const [isDeleting, setIsDeleting] = useState(false);
+  const deletePost = usePostStore((state) => state.deletePost);
+  const decrementPostsCount = useUserProfileStore((state) => state.deletePost);
+
+  const handleDeletePost = async () => {
+    // We will first add a confirmation for the user. If they cancel, it will return out of this function
+    if (!window.confirm("Are you sure you want to delete this post?")) return;
+    if (isDeleting) return; // Return if the user clicks the delete button while deleting
+
+    try {
+      // First we will delete the image from the storage
+      const imageRef = ref(storage, `posts/${post.id}`);
+      await deleteObject(imageRef); // This will delete the post from the database
+      const userRef = doc(firestore, "users", authUser.uid);
+      // Now, we'll delete the image from the posts collection
+      await deleteDoc(doc(firestore, "posts", post.id));
+
+      // Now, we'll delete the image from the users collection
+      await updateDoc(userRef, {
+        posts: arrayRemove(post.id),
+      });
+
+      // We will update the User Interface
+
+      deletePost(post.id);
+      decrementPostsCount(post.id);
+      showToast("Success", "Post deleted successfully", "success");
+    } catch (error) {
+      showToast("Error", error.message, "error");
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   // We will use Grid here, since they are the children of the Grid container.
   return (
@@ -131,6 +171,8 @@ const ProfilePost = ({ post }) => {
                       _hover={{ bg: "whiteAlpha.300", color: "red.600" }}
                       borderRadius={3}
                       p={1}
+                      onClick={handleDeletePost}
+                      isLoading={isDeleting}
                     >
                       <MdDelete size={20} cursor={"pointer"} />
                     </Button>

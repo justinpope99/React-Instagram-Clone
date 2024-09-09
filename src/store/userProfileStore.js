@@ -17,6 +17,14 @@ const useUserProfileStore = create((set) => ({
         posts: [post.id, ...state.userProfile.posts],
       },
     })),
+  // This will update the Profile Header when a user deletes a post
+  deletePost: (postId) =>
+    set((state) => ({
+      userProfile: {
+        ...state.userProfile, // We will only update the posts array, everything else is the same
+        posts: state.userProfile.posts.filter((id) => id !== postId), // Remove the selected post
+      },
+    })),
 }));
 
 export default useUserProfileStore;
