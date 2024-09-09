@@ -10,7 +10,8 @@ const usePostStore = create((set) => ({
 
   // Add Comment
 
-  // Set Post
+  // Set Post: This will take the new post an update our state with it
+  setPosts: (posts) => set({ posts }),
 }));
 
 export default usePostStore;

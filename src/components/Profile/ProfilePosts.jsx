@@ -1,16 +1,12 @@
-import { Box, Grid, Skeleton, VStack } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { Box, Flex, Grid, Skeleton, Text, VStack } from "@chakra-ui/react";
 import ProfilePost from "./ProfilePost.jsx";
+import useGetUserPosts from "../../hooks/useGetUserPosts.js";
 
 const ProfilePosts = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading, posts } = useGetUserPosts();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 2000);
-  }, []);
-
+  const noPostsFounds = !isLoading && posts.length === 0;
+  if (noPostsFounds) return <NoPostsFound />;
   // We are using Grid so we can have 3 items at the same width, we will use fractions for this.
   return (
     <Grid
@@ -22,20 +18,19 @@ const ProfilePosts = () => {
       columnGap={1}
     >
       {isLoading &&
-        [0, 1, 2, 3, 4, 5].map((_, idx) => (
+        [0, 1, 2].map((_, idx) => (
           <VStack key={idx} alignItems={"flex-start"} gap={4}>
             <Skeleton w={"full"}>
               <Box height={"300px"}>contents wrapped</Box>
             </Skeleton>
           </VStack>
         ))}
-
+      {/* If it is not loading, we'll map the posts, and show a component */}
       {!isLoading && (
         <>
-          <ProfilePost img="/img1.png" />
-          <ProfilePost img="/img2.png" />
-          <ProfilePost img="/img3.png" />
-          <ProfilePost img="/img4.png" />
+          {posts.map((post) => (
+            <ProfilePost post={post} key={post.id} />
+          ))}
         </>
       )}
     </Grid>
@@ -43,3 +38,11 @@ const ProfilePosts = () => {
 };
 
 export default ProfilePosts;
+
+const NoPostsFound = () => {
+  return (
+    <Flex flexDir="column" textAlign={"center"} mx={"auto"} mt={10}>
+      <Text fontSize={"2xl"}>No Posts Found🤔</Text>
+    </Flex>
+  );
+};
