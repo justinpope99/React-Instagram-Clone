@@ -43,13 +43,14 @@ const useFollowUser = (userId) => {
           // Check each id in following to see if it's equal to the userId. We'll remove the id that matches.
           following: authUser.following.filter((uid) => uid !== userId),
         });
-        setUserProfile({
-          ...userProfile,
-          // We're removing the id of the authUser
-          followers: userProfile.followers.filter(
-            (uid) => uid !== authUser.uid
-          ),
-        });
+        if (userProfile)
+          setUserProfile({
+            ...userProfile,
+            // We're removing the id of the authUser
+            followers: userProfile.followers.filter(
+              (uid) => uid !== authUser.uid
+            ),
+          });
         // Lastly, we'll update the local storage to keep everything in sync
         localStorage.setItem(
           "user-info",
@@ -67,10 +68,11 @@ const useFollowUser = (userId) => {
           ...authUser,
           following: [...authUser.following, userId],
         });
-        setUserProfile({
-          ...userProfile,
-          following: [...userProfile.following, authUser.userId],
-        });
+        if (userProfile)
+          setUserProfile({
+            ...userProfile,
+            followers: [...userProfile.followers, authUser.uid],
+          });
 
         localStorage.setItem(
           "user-info",
