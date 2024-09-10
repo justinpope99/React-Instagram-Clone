@@ -185,28 +185,17 @@ const ProfilePost = ({ post }) => {
                   maxH={"350px"}
                   overflowY={"auto"} // This will add a scrollbar if there are a lot of comments
                 >
-                  <Comment
-                    createdAt="1d ago"
-                    username="asaprogrammer_"
-                    profilePic="/profilepic.png"
-                    text={"Dummy images from unsplash"}
-                  />
-                  <Comment
-                    createdAt="12h ago"
-                    username="abrahmov"
-                    profilePic="https://bit.ly/dan-abramov"
-                    text={"Nice pic"}
-                  />
-                  <Comment
-                    createdAt="3h ago"
-                    username="kentdodds"
-                    profilePic="https://bit.ly/kent-c-dodds"
-                    text={"Good clone dude!"}
-                  />
+                  {post.comments.map((comment) => (
+                    <Comment key={comment.id} comment={comment} />
+                  ))}
                 </VStack>
                 <Divider my={4} bg={"gray.800"} />
 
-                <PostFooter isProfilePage={true} username={undefined} />
+                <PostFooter
+                  isProfilePage={true}
+                  post={post}
+                  username={undefined}
+                />
               </Flex>
             </Flex>
           </ModalBody>

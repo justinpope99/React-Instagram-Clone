@@ -24,6 +24,7 @@ import useShowToast from "../../hooks/useShowToast.js";
 import useAuthStore from "../../store/authStore.js";
 import usePostStore from "../../store/postStore.js";
 import useUserProfileStore from "../../store/userProfileStore.js";
+// import { useLocation } from "react-router-dom";
 import {
   addDoc,
   arrayUnion,
@@ -151,6 +152,7 @@ function useCreatePost() {
   const authUser = useAuthStore((state) => state.user);
   const createPost = usePostStore((state) => state.createPost);
   const addPost = useUserProfileStore((state) => state.addPost);
+  //   const { pathname } = useLocation();
 
   // This is our function to create a post. It will take the selected file and caption as arguments
   const handleCreatePost = async (selectedFile, caption) => {
