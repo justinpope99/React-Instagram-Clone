@@ -199,7 +199,7 @@ const ProfilePost = ({ post }) => {
                 <PostFooter
                   isProfilePage={true}
                   post={post}
-                  username={undefined}
+                  creatorProfile={undefined}
                 />
               </Flex>
             </Flex>

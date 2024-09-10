@@ -16,8 +16,9 @@ import {
 import usePostComment from "../../hooks/usePostComment.js";
 import useAuthStore from "../../store/authStore.js";
 import useLikePost from "../../hooks/useLikePost.js";
+import { timeAgo } from "../../utils/timeAgo.js";
 
-const PostFooter = ({ post, username, isProfilePage }) => {
+const PostFooter = ({ post, isProfilePage, creatorProfile }) => {
   const { isCommenting, handlePostComment } = usePostComment();
   const [comment, setComment] = useState("");
   const authUser = useAuthStore();
@@ -50,19 +51,26 @@ const PostFooter = ({ post, username, isProfilePage }) => {
       <Text fontWeight={600} fontSize={"sm"}>
         {likes} likes
       </Text>
+      {isProfilePage && (
+        <Text fontSize={12} color={"gray"}>
+          Posted {timeAgo(post.createdAt)}
+        </Text>
+      )}
       {!isProfilePage && (
         <>
           <Text fontSize={"sm"} fontWeight={700}>
-            {/* The username will be followed by one space " " for separation */}
-            {username}{" "}
+            {/* Put a question mark incase it is in a loading state */}
+            {creatorProfile?.username}{" "}
             {/* as={"span"} means the Text is not a paragraph, but instead a span */}
             <Text as={"span"} fontWeight={400}>
-              Feeling good
+              {post.caption}
             </Text>
           </Text>
-          <Text fontSize={"sm"} color={"gray"}>
-            View all 1,000 comments
-          </Text>
+          {post.comments.length > 0 && (
+            <Text fontSize={"sm"} color={"gray"} cursor={"pointer"}>
+              View all {post.comments.length} comments
+            </Text>
+          )}
         </>
       )}
 
