@@ -7,7 +7,7 @@ import {
   InputRightElement,
   Text,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import {
   CommentLogo,
   NotificationsLogo,
@@ -22,6 +22,7 @@ const PostFooter = ({ post, username, isProfilePage }) => {
   const { isCommenting, handlePostComment } = usePostComment();
   const [comment, setComment] = useState("");
   const authUser = useAuthStore();
+  const commentRef = useRef(null);
 
   const handleSubmitComment = async () => {
     // We don't need to prevent default as this is not a form
@@ -47,7 +48,12 @@ const PostFooter = ({ post, username, isProfilePage }) => {
           {!liked ? <NotificationsLogo /> : <UnlikeLogo />}
         </Box>
 
-        <Box cursor={"pointer"} fontSize={18}>
+        <Box
+          cursor={"pointer"}
+          fontSize={18}
+          // We want to focus the comment input when we click on the comment icon
+          onClick={() => commentRef.current.focus()}
+        >
           <CommentLogo />
         </Box>
       </Flex>
@@ -85,6 +91,7 @@ const PostFooter = ({ post, username, isProfilePage }) => {
               fontSize={14}
               onChange={(e) => setComment(e.target.value)}
               value={comment}
+              ref={commentRef}
             />
             <InputRightElement>
               <Button

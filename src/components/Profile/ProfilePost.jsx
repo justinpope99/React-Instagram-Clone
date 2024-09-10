@@ -27,6 +27,7 @@ import { deleteObject, ref } from "firebase/storage";
 import { firestore, storage } from "../../firebase/firebase.js";
 import { arrayRemove, deleteDoc, doc, updateDoc } from "firebase/firestore";
 import usePostStore from "../../store/postStore.js";
+import Caption from "../Comment/Caption.jsx";
 
 const ProfilePost = ({ post }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -185,6 +186,10 @@ const ProfilePost = ({ post }) => {
                   maxH={"350px"}
                   overflowY={"auto"} // This will add a scrollbar if there are a lot of comments
                 >
+                  {/* CAPTION */}
+                  {/* If this post has a caption, render the caption with the post */}
+                  {post.caption && <Caption post={post} />}
+                  {/* COMMENTS */}
                   {post.comments.map((comment) => (
                     <Comment key={comment.id} comment={comment} />
                   ))}

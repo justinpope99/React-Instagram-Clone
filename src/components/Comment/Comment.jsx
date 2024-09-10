@@ -13,9 +13,9 @@ const Comment = ({ comment }) => {
         <Avatar src={userProfile.profilePicURL} size={"sm"} />
       </Link>
       <Flex direction={"column"}>
-        <Flex gap={2} alignItems={"center"}>
+        <Flex gap={2}>
           <Link to={`/${userProfile.username}`}>
-            <Text fontWeight={"bold"} fontSize={12}>
+            <Text fontWeight={"bold"} fontSize={12} mt={"2px"}>
               {userProfile.username}
             </Text>
           </Link>
