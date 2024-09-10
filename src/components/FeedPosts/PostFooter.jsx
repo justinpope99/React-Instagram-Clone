@@ -15,14 +15,14 @@ import {
 } from "../../assets/constants.jsx";
 import usePostComment from "../../hooks/usePostComment.js";
 import useAuthStore from "../../store/authStore.js";
+import useLikePost from "../../hooks/useLikePost.js";
 
 const PostFooter = ({ post, username, isProfilePage }) => {
-  const [liked, setLiked] = useState(false);
-  const [likes, setLikes] = useState(1000);
   const { isCommenting, handlePostComment } = usePostComment();
   const [comment, setComment] = useState("");
   const authUser = useAuthStore();
   const commentRef = useRef(null);
+  const { handleLikePost, isLiked, likes } = useLikePost(post);
 
   const handleSubmitComment = async () => {
     // We don't need to prevent default as this is not a form
@@ -31,21 +31,11 @@ const PostFooter = ({ post, username, isProfilePage }) => {
     setComment("");
   };
 
-  const handleLike = () => {
-    if (liked) {
-      setLiked(false);
-      setLikes(likes - 1);
-    } else {
-      setLiked(true);
-      setLikes(likes + 1);
-    }
-  };
-
   return (
     <Box mb={10} marginTop={"auto"}>
       <Flex alignItems={"center"} gap={4} w={"full"} pt={0} mb={2} mt={4}>
-        <Box onClick={handleLike} cursor={"pointer"} fontSize={18}>
-          {!liked ? <NotificationsLogo /> : <UnlikeLogo />}
+        <Box onClick={handleLikePost} cursor={"pointer"} fontSize={18}>
+          {!isLiked ? <NotificationsLogo /> : <UnlikeLogo />}
         </Box>
 
         <Box
