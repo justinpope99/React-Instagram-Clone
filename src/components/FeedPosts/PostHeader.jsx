@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
 import useFollowUser from "../../hooks/useFollowUser.js";
+import { timeAgo } from "../../utils/timeAgo.js";
 
 const PostHeader = ({ post, creatorProfile }) => {
   // We're using our custom hook to implement the Follow/Unfollow button
@@ -38,7 +39,7 @@ const PostHeader = ({ post, creatorProfile }) => {
           ) : (
             <Skeleton w={"100px"} h={"10px"} />
           )}
-          <Box color={"gray.500"}>• 1w</Box>
+          <Box color={"gray.500"}>• {timeAgo(post.createdAt)}</Box>
         </Flex>
       </Flex>
       <Box cursor={"pointer"}>
