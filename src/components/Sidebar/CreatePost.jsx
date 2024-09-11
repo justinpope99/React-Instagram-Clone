@@ -24,7 +24,7 @@ import useShowToast from "../../hooks/useShowToast.js";
 import useAuthStore from "../../store/authStore.js";
 import usePostStore from "../../store/postStore.js";
 import useUserProfileStore from "../../store/userProfileStore.js";
-// import { useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   addDoc,
   arrayUnion,
@@ -152,7 +152,8 @@ function useCreatePost() {
   const authUser = useAuthStore((state) => state.user);
   const createPost = usePostStore((state) => state.createPost);
   const addPost = useUserProfileStore((state) => state.addPost);
-  //   const { pathname } = useLocation();
+  const userProfile = useUserProfileStore((state) => state.userProfile);
+  const { pathname } = useLocation();
 
   // This is our function to create a post. It will take the selected file and caption as arguments
   const handleCreatePost = async (selectedFile, caption) => {
@@ -190,10 +191,19 @@ function useCreatePost() {
 
       newPost.imageURL = downloadURL;
 
-      // We'll update the posts in the Front-end, we'll also add an id, so we don't have any errors, when we render the posts. createPosts() will add the post into the post state.
-      createPost({ ...newPost, id: postDocRef.id });
-      // After we create a post, we need to update the UI. This will increment the Posts number in the Post Header
-      addPost({ ...newPost, id: postDocRef.id });
+      // We'll update the posts in the Front-end, we'll also add an id, so we don't have any errors,
+      // when we render the posts. createPosts() will add the post into the post state.
+      // Make sure that we only add posts to a profile if the user is creating a post on their page.
+      if (userProfile.uid === authUser.uid)
+        createPost({ ...newPost, id: postDocRef.id });
+
+      // We don't want to update the state for the Profile Page if the user is on the Home Page
+      // We only want to update the state of the posts if we are currently on our Profile Page.
+      // If we're on another user's page, and we create a post, that user's posts shouldn't increment
+      if (pathname !== "/" && userProfile.uid === authUser.uid) {
+        // After we create a post, we need to update the UI. This will increment the Posts number in the Post Header
+        addPost({ ...newPost, id: postDocRef.id });
+      }
 
       showToast("Success", "Post created successfully", "success");
     } catch (error) {
