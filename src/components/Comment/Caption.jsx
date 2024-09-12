@@ -7,11 +7,11 @@ const Caption = ({ post }) => {
   // The user should come from the Profile we're currently in
   const userProfile = useUserProfileStore((state) => state.userProfile);
   return (
-    <Flex gap={4}>
+    <Flex gap={4} w={"full"}>
       <Link to={`/${userProfile.username}`}>
         <Avatar src={userProfile.profilePicURL} size={"sm"} />
       </Link>
-      <Flex direction={"column"}>
+      <Flex direction={"column"} w={"full"}>
         <Flex gap={2}>
           <Link to={`/${userProfile.username}`}>
             <Text fontWeight={"bold"} fontSize={12} mt={"2px"}>
@@ -20,7 +20,13 @@ const Caption = ({ post }) => {
           </Link>
           <Text fontSize={14}>{post.caption}</Text>
         </Flex>
-        <Text fontSize={12} color={"gray"}>
+        <Text
+          fontSize={12}
+          color={"gray"}
+          w={"full"}
+          textAlign={"end"}
+          pr={"24px"}
+        >
           {timeAgo(post.createdAt)}
         </Text>
       </Flex>
