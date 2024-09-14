@@ -194,7 +194,9 @@ const ProfilePost = ({ post }) => {
                     <Comment key={comment.id} comment={comment} />
                   ))}
                 </VStack>
-                <Divider my={4} bg={"gray.800"} />
+                {post.comments.length !== 0 ? (
+                  <Divider my={4} bg={"gray.800"} />
+                ) : null}
 
                 <PostFooter
                   isProfilePage={true}
