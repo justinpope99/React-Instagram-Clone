@@ -1,10 +1,12 @@
-import { Box, Flex, Link, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Link, Text, useDisclosure, VStack } from "@chakra-ui/react";
 import SuggestedHeader from "./SuggestedHeader.jsx";
 import SuggestedUser from "./SuggestedUser.jsx";
 import useGetSuggestedUsers from "../../hooks/useGetSuggestedUsers.js";
+import SuggestedUsersModal from "./SuggestedUsersModal.jsx";
 
 const SuggestedUsers = () => {
   const { isLoading, suggestedUsers } = useGetSuggestedUsers();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // We can choose to render a skeleton here
   if (isLoading) return null;
@@ -21,13 +23,17 @@ const SuggestedUsers = () => {
             fontWeight={"bold"}
             _hover={{ color: "gray.400" }}
             cursor={"pointer"}
+            onClick={onOpen}
           >
             See All
           </Text>
+          {isOpen ? (
+            <SuggestedUsersModal isOpen={isOpen} onClose={onClose} />
+          ) : null}
         </Flex>
       )}
 
-      {suggestedUsers.map((user) => (
+      {suggestedUsers.slice(0, 5).map((user) => (
         <SuggestedUser user={user} key={user.uid} setUser={undefined} />
       ))}
 
