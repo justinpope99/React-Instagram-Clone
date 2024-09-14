@@ -20,6 +20,7 @@ import useAuthStore from "../../store/authStore.js";
 import usePreviewImg from "../../hooks/usePreviewImg.js";
 import useEditProfile from "../../hooks/useEditProfile.js";
 import useShowToast from "../../hooks/useShowToast.js";
+import { Textarea } from "@chakra-ui/react";
 
 const EditProfile = ({ isOpen, onClose }) => {
   // We'll add a state to take care of the inputs
@@ -128,10 +129,9 @@ const EditProfile = ({ isOpen, onClose }) => {
 
                 <FormControl>
                   <FormLabel fontSize={"sm"}>Bio</FormLabel>
-                  <Input
+                  <Textarea
                     placeholder={"Bio"}
                     size={"sm"}
-                    type={"text"}
                     value={inputs.bio || authUser.bio}
                     onChange={(e) =>
                       setInputs({ ...inputs, bio: e.target.value })
