@@ -8,29 +8,24 @@ const Comment = ({ comment }) => {
 
   if (isLoading) return <CommentSkeleton />;
   return (
-    <Flex gap={4} w={"full"}>
-      <Link to={`/${userProfile.username}`}>
-        <Avatar src={userProfile.profilePicURL} size={"sm"} />
-      </Link>
-      <Flex direction={"column"} w={"full"}>
-        <Flex gap={2}>
+    <Flex gap={1} w={"full"} flexDir={"column"} mb={4}>
+      <Flex gap={3} w={"full"} alignContent={"center"}>
+        <Link to={`/${userProfile.username}`}>
+          <Avatar src={userProfile.profilePicURL} size={"xs"} />
+        </Link>
+        <Flex gap={1} w={"full"} alignContent={"center"}>
+          {" "}
           <Link to={`/${userProfile.username}`}>
-            <Text fontWeight={"bold"} fontSize={12} mt={"2px"}>
+            <Text fontWeight={"bold"} fontSize={14} h={"full"}>
               {userProfile.username}
             </Text>
           </Link>
-          <Text fontSize={14}>{comment.comment}</Text>
+          <Text fontSize={14} color={"gray"} h={"full"}>{` • ${timeAgo(
+            comment.createdAt
+          )}`}</Text>
         </Flex>
-        <Text
-          fontSize={12}
-          color={"gray"}
-          w={"full"}
-          textAlign={"end"}
-          pr={"24px"}
-        >
-          {timeAgo(comment.createdAt)}
-        </Text>
       </Flex>
+      <Text fontSize={14}>{comment.comment}</Text>
     </Flex>
   );
 };

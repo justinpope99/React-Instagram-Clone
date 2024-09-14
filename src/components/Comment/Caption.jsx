@@ -7,29 +7,27 @@ const Caption = ({ post }) => {
   // The user should come from the Profile we're currently in
   const userProfile = useUserProfileStore((state) => state.userProfile);
   return (
-    <Flex gap={4} w={"full"}>
-      <Link to={`/${userProfile.username}`}>
-        <Avatar src={userProfile.profilePicURL} size={"sm"} />
-      </Link>
-      <Flex direction={"column"} w={"full"}>
-        <Flex gap={2}>
+    <Flex gap={1} w={"full"} flexDir={"column"} mb={4}>
+      <Flex gap={3} w={"full"} alignContent={"center"}>
+        <Link to={`/${userProfile.username}`}>
+          <Avatar src={userProfile.profilePicURL} size={"xs"} />
+        </Link>
+        <Flex gap={1} w={"full"} alignContent={"center"}>
+          {" "}
           <Link to={`/${userProfile.username}`}>
-            <Text fontWeight={"bold"} fontSize={12} mt={"2px"}>
+            <Text fontWeight={"bold"} fontSize={14} h={"full"}>
               {userProfile.username}
             </Text>
           </Link>
-          <Text fontSize={14}>{post.caption}</Text>
+          <Text
+            fontSize={14}
+            color={"gray"}
+            h={"full"}
+            // border={"1px solid red"}
+          >{` • ${timeAgo(post.createdAt)}`}</Text>
         </Flex>
-        <Text
-          fontSize={12}
-          color={"gray"}
-          w={"full"}
-          textAlign={"end"}
-          pr={"24px"}
-        >
-          {timeAgo(post.createdAt)}
-        </Text>
       </Flex>
+      <Text fontSize={14}>{post.caption}</Text>
     </Flex>
   );
 };
