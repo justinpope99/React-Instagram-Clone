@@ -62,7 +62,7 @@ const GoogleAuth = ({ prefix }) => {
       cursor={"pointer"}
       onClick={handleGoogleAuth}
     >
-      <Image src="/public/google.png" w={5} alt="Google Logo" />
+      <Image src="/google.png" w={5} alt="Google Logo" />
       <Text mx={2} color={"blue.500"}>
         {prefix} with Google
       </Text>
