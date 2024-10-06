@@ -38,7 +38,7 @@ const SuggestedUsers = () => {
       ))}
 
       <Box fontSize={12} color={"gray.500"} mt={5} alignSelf={"start"}>
-        © 2023 Built By{" "}
+        © 2024 Built By{" "}
         <Link
           href="https://github.com/justinpope99"
           target="_blank"
